@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL =
+const VITE_BASE_API_URL =
   import.meta.env.VITE_BASE_API_URL || "http://localhost:8000/api";
 
 export interface LoginCredentials {
@@ -22,6 +22,21 @@ export interface LogoutResponse {
   message?: string;
 }
 
+export interface RegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterResponse {
+  token: string;
+  user?: {
+    id: string;
+    email: string;
+    name?: string;
+  };
+}
+
 /**
  * Login user and receive authentication token
  * @param credentials - User email and password
@@ -31,7 +46,7 @@ export const login = async (
   credentials: LoginCredentials
 ): Promise<LoginResponse> => {
   const { data } = await axios.post<LoginResponse>(
-    `${API_BASE_URL}/login`,
+    `${VITE_BASE_API_URL}/login`,
     credentials
   );
   return data;
@@ -44,13 +59,28 @@ export const login = async (
  */
 export const logout = async (currentToken: string): Promise<LogoutResponse> => {
   const { data } = await axios.post<LogoutResponse>(
-    `${API_BASE_URL}/logout`,
+    `${VITE_BASE_API_URL}/logout`,
     {},
     {
       headers: {
         Authorization: `Bearer ${currentToken}`,
       },
     }
+  );
+  return data;
+};
+
+/**
+ * Register a new user
+ * @param credentials - User name, email and password
+ * @returns Promise with registration response containing token
+ */
+export const register = async (
+  credentials: RegisterCredentials
+): Promise<RegisterResponse> => {
+  const { data } = await axios.post<RegisterResponse>(
+    `${VITE_BASE_API_URL}/register`,
+    credentials
   );
   return data;
 };

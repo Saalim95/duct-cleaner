@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { login } from "@/api/auth";
+import { register } from "@/api/auth";
 import AirIcon from "@mui/icons-material/Air";
 
-export const LoginPage: React.FC = () => {
+export const SignUpPage: React.FC = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,12 +19,14 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await login({ email, password });
+      const response = await register({ name, email, password });
       setToken(response.token);
       navigate("/");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to login. Please try again."
+        err instanceof Error
+          ? err.message
+          : "Failed to sign up. Please try again."
       );
     } finally {
       setIsLoading(false);
@@ -41,7 +44,7 @@ export const LoginPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-800 mb-2">
               Clean Air Solutions
             </h1>
-            <p className="text-gray-600">Sign in to your account</p>
+            <p className="text-gray-600">Create your account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -50,6 +53,25 @@ export const LoginPage: React.FC = () => {
                 {error}
               </div>
             )}
+
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                placeholder="John Doe"
+                disabled={isLoading}
+              />
+            </div>
 
             <div>
               <label
@@ -84,7 +106,7 @@ export const LoginPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 disabled={isLoading}
               />
             </div>
@@ -94,18 +116,18 @@ export const LoginPage: React.FC = () => {
               disabled={isLoading}
               className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? "Creating account..." : "Sign Up"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{" "}
+              Already have an account?{" "}
               <button
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate("/login")}
                 className="text-blue-600 hover:text-blue-700 font-medium"
               >
-                Sign up
+                Sign in
               </button>
             </p>
           </div>

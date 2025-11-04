@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HomePage } from "./pages/HomePage/HomePage";
 import { SchedulePage } from "./pages/SchedulePage/SchedulePage";
 import { LoginPage } from "./pages/LoginPage/LoginPage";
+import { SignUpPage } from "./pages/SignUpPage/SignUpPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 
 // Protected Route wrapper component
@@ -20,6 +21,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignUpPage />} />
       <Route
         path="/"
         element={
