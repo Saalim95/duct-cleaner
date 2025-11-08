@@ -28,14 +28,14 @@ export const DetailForm = () => {
   const isThreePlusFurnaces = formState.numFurnace === "3+";
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="p-6">
       <ContactModal
         isOpen={formState.showContactModal}
         onClose={() => handlers.setShowContactModal(false)}
       />
 
       <Card>
-        <div className="space-y-6">
+        <div className="space-y-6 transition-all duration-300">
           <h3 className="text-2xl font-bold text-gray-800 mb-6">
             Enter Your Details
           </h3>
@@ -67,13 +67,15 @@ export const DetailForm = () => {
 
           {/* Furnace Arrangement - Only shown when 2 furnaces are selected */}
           {formState.numFurnace === "2" && (
-            <FormField label="Are your furnaces...?">
-              <SelectField
-                value={formState.furnaceLocation}
-                onChange={handlers.setFurnaceLocation}
-                options={rules.furnaceLocations}
-              />
-            </FormField>
+            <div className="animate-in fade-in slide-in-from-top-4 duration-300">
+              <FormField label="Are your furnaces...?">
+                <SelectField
+                  value={formState.furnaceLocation}
+                  onChange={handlers.setFurnaceLocation}
+                  options={rules.furnaceLocations}
+                />
+              </FormField>
+            </div>
           )}
 
           {/* Furnace Location */}
@@ -96,19 +98,23 @@ export const DetailForm = () => {
 
           {/* Dryer Vent Exit Point - Only shown when "yes" is selected */}
           {formState.dryerVentCleaning === "yes" && (
-            <FormField label="Exit point of your Dryer Vent?">
-              <SelectField
-                value={formState.dryerVentExitPoint}
-                onChange={handlers.setDryerVentExitPoint}
-                options={rules.exitPoints}
-              />
-            </FormField>
+            <div className="animate-in fade-in slide-in-from-top-4 duration-300">
+              <FormField label="Exit point of your Dryer Vent?">
+                <SelectField
+                  value={formState.dryerVentExitPoint}
+                  onChange={handlers.setDryerVentExitPoint}
+                  options={rules.exitPoints}
+                />
+              </FormField>
+            </div>
           )}
 
           {/* Submit Button */}
           <button
             type="button"
-            onClick={isThreePlusFurnaces ? handleRequestAppointment : handleGetQuote}
+            onClick={
+              isThreePlusFurnaces ? handleRequestAppointment : handleGetQuote
+            }
             disabled={isLoading && !isThreePlusFurnaces}
             className={`w-full ${
               isThreePlusFurnaces
@@ -118,7 +124,9 @@ export const DetailForm = () => {
           >
             {isThreePlusFurnaces
               ? "Request Appointment"
-              : (isLoading ? "Loading..." : "Get Quote")}
+              : isLoading
+              ? "Loading..."
+              : "Get Quote"}
           </button>
 
           {/* Display Quote Result */}
